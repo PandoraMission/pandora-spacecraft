@@ -417,6 +417,34 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#maintainers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maintainers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Maintainers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TLEs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -527,6 +555,34 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#maintainers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maintainers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Maintainers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TLEs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -585,6 +641,142 @@
 <li>2026-02-20 20:09:56.999998</li>
 <li>2026-02-25 11:33:59.999999</li>
 </ul>
+<h2 id="maintainers">Maintainers</h2>
+<p>If you have to maintain this package you can use the <code>maintainence</code> module to update the CK and SPK files using telemetry, and update the test kernel if needed. You will need the quaternions from telemetry in their raw, unformated form as a CSV file, which look like this:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;"></th>
+<th style="text-align: right;">time</th>
+<th style="text-align: right;">q1</th>
+<th style="text-align: right;">q2</th>
+<th style="text-align: right;">q3</th>
+<th style="text-align: right;">q4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.76651e+12</td>
+<td style="text-align: right;">0.435525</td>
+<td style="text-align: right;">-1.0177</td>
+<td style="text-align: right;">-0.95454</td>
+<td style="text-align: right;">0.865711</td>
+</tr>
+<tr>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.7668e+12</td>
+<td style="text-align: right;">-1.02916</td>
+<td style="text-align: right;">0.940569</td>
+<td style="text-align: right;">0.157958</td>
+<td style="text-align: right;">0.674988</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1.76815e+12</td>
+<td style="text-align: right;">-0.203154</td>
+<td style="text-align: right;">0.0986252</td>
+<td style="text-align: right;">-0.298318</td>
+<td style="text-align: right;">0.927197</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1.76815e+12</td>
+<td style="text-align: right;">-0.313266</td>
+<td style="text-align: right;">0.126517</td>
+<td style="text-align: right;">-0.32174</td>
+<td style="text-align: right;">0.883077</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1.76815e+12</td>
+<td style="text-align: right;">-0.463277</td>
+<td style="text-align: right;">0.159831</td>
+<td style="text-align: right;">-0.345662</td>
+<td style="text-align: right;">0.798644</td>
+</tr>
+</tbody>
+</table>
+<p>and the positions and velocities over time which look like this:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;"></th>
+<th style="text-align: right;">time</th>
+<th style="text-align: right;">p1</th>
+<th style="text-align: right;">p2</th>
+<th style="text-align: right;">p3</th>
+<th style="text-align: right;">v1</th>
+<th style="text-align: right;">v2</th>
+<th style="text-align: right;">v3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.76815e+12</td>
+<td style="text-align: right;">6544.48</td>
+<td style="text-align: right;">1698.28</td>
+<td style="text-align: right;">-1759.2</td>
+<td style="text-align: right;">2.08593</td>
+<td style="text-align: right;">-0.556566</td>
+<td style="text-align: right;">7.23922</td>
+</tr>
+<tr>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.76815e+12</td>
+<td style="text-align: right;">6556.82</td>
+<td style="text-align: right;">1694.9</td>
+<td style="text-align: right;">-1715.72</td>
+<td style="text-align: right;">2.03993</td>
+<td style="text-align: right;">-0.568475</td>
+<td style="text-align: right;">7.25141</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1.76815e+12</td>
+<td style="text-align: right;">6576.84</td>
+<td style="text-align: right;">1689.11</td>
+<td style="text-align: right;">-1643.1</td>
+<td style="text-align: right;">1.9631</td>
+<td style="text-align: right;">-0.588273</td>
+<td style="text-align: right;">7.27112</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1.76815e+12</td>
+<td style="text-align: right;">6596.09</td>
+<td style="text-align: right;">1683.13</td>
+<td style="text-align: right;">-1570.3</td>
+<td style="text-align: right;">1.88616</td>
+<td style="text-align: right;">-0.608106</td>
+<td style="text-align: right;">7.2901</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1.76815e+12</td>
+<td style="text-align: right;">6614.57</td>
+<td style="text-align: right;">1676.95</td>
+<td style="text-align: right;">-1497.31</td>
+<td style="text-align: right;">1.80899</td>
+<td style="text-align: right;">-0.627867</td>
+<td style="text-align: right;">7.30822</td>
+</tr>
+</tbody>
+</table>
+<p>From a terminal or a notebook run the following to update CK and SPK</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pandoraspacecraft.maintenance</span><span class="w"> </span><span class="kn">import</span> <span class="n">update_cks</span><span class="p">,</span> <span class="n">update_spks</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">update_cks</span><span class="p">(</span><span class="n">quaternions_csv_filename</span><span class="p">)</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="n">update_spks</span><span class="p">(</span><span class="n">position_csv_filename</span><span class="p">)</span>
+</span></code></pre></div>
+<p>You can then restart your session and run the following to update the test data, if necessary. You would only do this if you changed the code base significantly or if you wanted to change the period of validity for the test data.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pandoraspacecraft.maintenance</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_test_data</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="n">make_test_data</span><span class="p">()</span>
+</span></code></pre></div>
+<p>When you have finished your updates you should make sure to push them to the <code>pandoraspacecraft</code> repo. Inside the <code>utils.py</code> module update <code>nweeks = X</code> to the number of weeks of CK and SPK files you have now made.</p>
+<p>These files are not included with the distribution of the package to pip and are instead downloaded and cached whenever you run the package. This ensures that the files are shared between multiple installs across different environments.</p>
+<h3 id="tles">TLEs</h3>
+<p>TLEs are not used by this package but are maintained and pushed to GitHub.</p>
 
 
 

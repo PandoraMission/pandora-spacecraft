@@ -54,11 +54,14 @@ Version and Date
     Version 0.0.11 -- March 19, 2026 -- Andrew Gardner. 
        -  Re-named to frames to match the current spacecraft number -- Christina Hedges
 
+    Version 0.0.12 -- May 26, 2026 -- Christina Hedges. 
+       -  Added the VDA using QUAT_body_wrt_det from commissioning
+
    Pandora Frame Kernel Version:
 
       \begindata
 
-         TEXT_KERNEL_ID += 'PANDORA_FRAMES V0.0.11 18-MARCH-2026 FK'
+         TEXT_KERNEL_ID += 'PANDORA_FRAMES V0.0.12 26-MAY-2026 FK'
 
       \begintext
 
@@ -200,6 +203,8 @@ PANDORA NAIF ID Codes -- Definitions
 
    PANDORA_NST2 is the boresight of star tracker 2.
 
+   PANDORA_VDA is the visible detector
+
    PANDORA_SHIELD is the face of the thermal shield.
 
        \begindata
@@ -227,6 +232,9 @@ PANDORA NAIF ID Codes -- Definitions
 
           NAIF_BODY_NAME += ( 'PANDORA_NST2'            )
           NAIF_BODY_CODE += ( -167395042                  )
+
+          NAIF_BODY_NAME += ( 'PANDORA_VDA'            )
+          NAIF_BODY_CODE += ( -167395070                  )
 
           NAIF_BODY_NAME += ( 'PANDORA_GPS'             )
           NAIF_BODY_CODE += ( -167395050                  )
@@ -277,6 +285,10 @@ Pandora Frames
       PANDORA_NST1              PANDORA_SC              FIXED     -167395041
       PANDORA_NST2              PANDORA_SC              FIXED     -167395042
 
+   Visible Channel Frame (-1673955x):
+   ------------------------------
+      PANDORA_VDA               PANDORA_SC              FIXED     -167395070
+
 Pandora Frames Hierarchy
 ----------------------------------------------------------
 
@@ -295,7 +307,7 @@ Pandora Frames Hierarchy
                       |
                       | <--- fixed
                       |
-                      'PANDORA_X_BEAM', 'PANDORA_INSTR', 'PANDORA_NSTx', 
+                      'PANDORA_X_BEAM', 'PANDORA_INSTR', 'PANDORA_NSTx', 'PANDORA_VDA'
                       'PANDORA_GPS', 'PANDORA_SOLAR_ARRAY_ARM', 'PANDORA_SHIELD'
                                       |
                                       | <--- ck
@@ -395,5 +407,32 @@ Pandora Star Tracker Frames (PANDORA_{NST1,NST2})
          TKFRAME_-167395042_ANGLES      = ( -31.9455, 42.8783, -45.89 )
          TKFRAME_-167395042_AXES        = ( 1, 2, 3 )
          TKFRAME_-167395042_UNITS       = 'DEGREES'
+
+      \begintext
+
+
+Pandora VDA Frame (PANDORA_VDA)
+----------------------------------------------------------
+
+   The Visible Detector Array is the visible channel on Pandora and is used as part of the attitude control "Visible-in-the-Loop".
+   
+   The frame integer code is the negative spacecraft ID with the suffix 700
+   The name of the frame is PANDORA_VDA.
+   The frame is a fixed rotation from the spacecraft frame, so it is Class 4.
+   The class ID is the same as the frame ID because this is a TK (fixed) frame.
+   The center of the frame is the center of the spacecraft reference frame.
+   The frame will be specified with a quaternion relative to the spacecraft body, as deteremined during spacecraft commissioning.
+
+      \begindata
+
+         FRAME_PANDORA_VDA           = -167395070
+         FRAME_-167395070_NAME          = 'PANDORA_VDA'
+         FRAME_-167395070_CLASS         = 4
+         FRAME_-167395070_CLASS_ID      = -167395070
+         FRAME_-167395070_CENTER        = -167395
+
+         TKFRAME_-167395070_RELATIVE    = 'PANDORA_SC'
+         TKFRAME_-167395070_SPEC        = 'QUATERNION'
+         TKFRAME_-167395070_Q      = (0.9984318399, 0.0001368700, 0.0002292500, -0.0559802620)
 
       \begintext

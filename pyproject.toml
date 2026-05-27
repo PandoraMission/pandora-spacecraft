@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pandoraspacecraft"
-version = "1.1.7"
+version = "1.1.8"
 description = ""
 authors = ["Christina Hedges <christina.l.hedges@nasa.gov>"]
 readme = "docs/README.md"
@@ -19,6 +19,7 @@ astropy = ">=5.0.0"
 pandas = "^2.2.3"
 sgp4 = "^2.25"
 tqdm = "^4.67.3"
+numpy-quaternion = ">=2023"
 
 [tool.poetry.group.dev]
 optional = true
@@ -37,6 +38,7 @@ mkdocs-include-markdown-plugin = "^7.1.4"
 mkdocstrings = {version = "^0.28.2", extras = ["python"]}
 jupyter-contrib-nbextensions = "^0.7.0"
 notebook = ">=6.0.0,<7.0.0"
+
 
 [build-system]
 requires = ["poetry-core"]

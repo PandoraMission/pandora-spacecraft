@@ -248,6 +248,22 @@ def radec_to_vec(ra, dec):
     return np.array([cd * ca, cd * sa, sd], dtype=float)
 
 
+def radec_to_east(ra, dec):
+    ra, dec = u.Quantity(ra, "deg").to(u.rad), u.Quantity(dec, "deg").to(u.rad)
+    return np.array([-np.sin(ra.value), np.cos(ra.value), 0.0])
+
+
+def radec_to_north(ra, dec):
+    ra, dec = u.Quantity(ra, "deg").to(u.rad), u.Quantity(dec, "deg").to(u.rad)
+    return np.array(
+        [
+            -np.sin(dec.value) * np.cos(ra.value),
+            -np.sin(dec.value) * np.sin(ra.value),
+            np.cos(dec.value),
+        ]
+    )
+
+
 def radec_from_vec(v):
     x, y, z = v
     r = np.linalg.norm(v)

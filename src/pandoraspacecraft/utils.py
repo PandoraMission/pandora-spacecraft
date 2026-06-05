@@ -106,7 +106,7 @@ def create_meta_kernel(tles_only=False):
         "pck00011.tpc": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/",
     }
     if not tles_only:
-        ndays = 128
+        ndays = 138
         for idx in np.arange(0, ndays + 1, 1):
             t = (Time.strptime("2026011", format_string="%Y%j") + idx * u.day).strftime(
                 "%Y%j"
@@ -257,6 +257,22 @@ def radec_to_vec(ra, dec):
     ca, sa = np.cos(ra.value), np.sin(ra.value)
     cd, sd = np.cos(dec.value), np.sin(dec.value)
     return np.array([cd * ca, cd * sa, sd], dtype=float)
+
+
+def radec_to_east(ra, dec):
+    ra, dec = u.Quantity(ra, "deg").to(u.rad), u.Quantity(dec, "deg").to(u.rad)
+    return np.array([-np.sin(ra.value), np.cos(ra.value), 0.0])
+
+
+def radec_to_north(ra, dec):
+    ra, dec = u.Quantity(ra, "deg").to(u.rad), u.Quantity(dec, "deg").to(u.rad)
+    return np.array(
+        [
+            -np.sin(dec.value) * np.cos(ra.value),
+            -np.sin(dec.value) * np.sin(ra.value),
+            np.cos(dec.value),
+        ]
+    )
 
 
 def radec_from_vec(v):

@@ -1,6 +1,7 @@
-# v1.1.7
+# v1.2.0
 
-- Made the package OS agnostic.
+- Fixed a bug where ingested quaternions and spacecraft position/velocities were ingested as TAI instead of UTC, causing a 37s error. Bug should be fixed. 
+
 
 # v1.0.7
 

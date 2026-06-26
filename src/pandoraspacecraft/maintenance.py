@@ -49,14 +49,16 @@ def convert_telemetry_to_cks(fname):
     CACHEDIR.mkdir(parents=True, exist_ok=True)
     qdf = pd.read_csv(fname)
 
-    qt = Time(
-        [
-            datetime(1970, 1, 1, tzinfo=timezone.utc) + timedelta(seconds=t / 1000)
-            # - timedelta(seconds=37)
-            for t in qdf.time.values
-        ],
-        scale="utc",
-    )
+    # qt = Time(
+    #     [
+    #         datetime(1970, 1, 1, tzinfo=timezone.utc) + timedelta(seconds=t / 1000)
+    #         # - timedelta(seconds=37)
+    #         for t in qdf.time.values
+    #     ],
+    #     scale="utc",
+    # )
+    # UTC TIME
+    qt = Time(qdf[qdf.columns[0]].values / 1000, format="unix_tai", scale="tai").utc
     quats = qdf[["q1", "q2", "q3", "q4"]].values
     k = np.isclose(np.linalg.norm(quats, axis=1), 1, atol=1e-4)
     k = k & np.roll(k, 1) & np.roll(k, -1)
@@ -148,38 +150,40 @@ def convert_telemetry_to_spks(fname):
     CACHEDIR.mkdir(parents=True, exist_ok=True)
     df = pd.read_csv(fname)
 
-    qt = Time(
-        [
-            datetime(1970, 1, 1, tzinfo=timezone.utc) + timedelta(seconds=t / 1000)
-            # - timedelta(seconds=37)
-            for t in df.time.values
-        ],
-        scale="utc",
-    )
+    # qt = Time(
+    #     [
+    #         datetime(1970, 1, 1, tzinfo=timezone.utc) + timedelta(seconds=t / 1000)
+    #         # - timedelta(seconds=37)
+    #         for t in df.time.values
+    #     ],
+    #     scale="utc",
+    # )
+    qt = Time(df[df.columns[0]].values / 1000, format="unix_tai", scale="tai").utc
+
     positions = df[["p1", "p2", "p3"]].values
     velocities = df[["v1", "v2", "v3"]].values
 
     norm = np.linalg.norm(positions, axis=1)
     resid = np.abs(norm - np.median(norm))
-    k = resid < 4 * np.median(resid)
+    k = resid < 15 * np.median(resid)
     k = k & np.roll(k, 1) & np.roll(k, -1)
     qt, positions, velocities = qt[k], positions[k], velocities[k]
 
     norm = np.linalg.norm(velocities, axis=1)
     resid = np.abs(norm - np.median(norm))
-    k = resid < 4 * np.median(resid)
+    k = resid < 15 * np.median(resid)
     k = k & np.roll(k, 1) & np.roll(k, -1)
     qt, positions, velocities = qt[k], positions[k], velocities[k]
 
     norm = np.gradient(np.linalg.norm(positions, axis=1), qt.jd)
     resid = np.abs(norm - np.median(norm))
-    k = resid < 4 * np.median(resid)
+    k = resid < 15 * np.median(resid)
     k = k & np.roll(k, 1) & np.roll(k, -1)
     qt, positions, velocities = qt[k], positions[k], velocities[k]
 
     norm = np.gradient(np.linalg.norm(velocities, axis=1), qt.jd)
     resid = np.abs(norm - np.median(norm))
-    k = resid < 4 * np.median(resid)
+    k = resid < 15 * np.median(resid)
     k = k & np.roll(k, 1) & np.roll(k, -1)
     qt, positions, velocities = qt[k], positions[k], velocities[k]
 

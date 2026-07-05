@@ -95,9 +95,10 @@ def create_meta_kernel(tles_only=False):
         "naif0012.tls": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/lsk/",
         "de440.bsp": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/",
         "pck00011.tpc": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/",
+        "earth_latest_high_prec.bpc": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/",
     }
     if not tles_only:
-        ndays = 170
+        ndays = 172
         for idx in np.arange(0, ndays + 1, 1):
             t = (Time.strptime("2026011", format_string="%Y%j") + idx * u.day).strftime(
                 "%Y%j"

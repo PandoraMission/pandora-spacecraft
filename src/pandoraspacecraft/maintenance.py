@@ -836,8 +836,8 @@ def split_ck():
             ],
             check=True,
             cwd=CACHEDIR,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
+            # stdout=subprocess.DEVNULL,
+            # stderr=subprocess.DEVNULL,
         )
         shutil.move(
             f"{CACHEDIR}pandora_{t1.strftime('%Y%j')}.bc",

@@ -214,18 +214,18 @@ def get_file_paths(file_dictionary):
         if is_url_in_cache(url + file_name, pkgname="pandoraspacecraft"):
             file_paths.append(get_file_path(url + file_name))
             log.debug(f"Found {file_name} in cache.")
-            continue
-        if progress_bar is None:
-            progress_bar = tqdm(
-                range(0, len(file_names)),
-                initial=idx,
-                total=len(file_names),
-                desc="Downloading SPICE Kernels",
-            )
-        file_paths.append(get_file_path(url + file_name))
-        progress_bar.n = idx
-        progress_bar.refresh()
-        log.debug(f"Downloaded {file_name}.")
+        else:
+            if progress_bar is None:
+                progress_bar = tqdm(
+                    range(0, len(file_names)),
+                    initial=idx,
+                    total=len(file_names),
+                    desc="Downloading SPICE Kernels",
+                )
+            file_paths.append(get_file_path(url + file_name))
+            progress_bar.n = idx
+            progress_bar.refresh()
+            log.debug(f"Downloaded {file_name}.")
     return file_paths
 
 
@@ -432,3 +432,17 @@ def find_merged_gaps(t, gap_threshold=100.0, merge_threshold=1000.0):
     merged.append((cur_left, cur_right))
 
     return merged
+
+
+def import_from_packagedir_to_cache():
+    paths = glob(str(Path(KERNELDIR) / "Pandora" / "*"))
+    for path in paths:
+        fname = path.split("/")[-1]
+        if not fname.startswith("pandora_2"):
+            continue
+        if (fname.endswith("bsp")) | (fname.endswith("bc")):
+            import_file_to_cache(
+                f"https://github.com/PandoraMission/pandora-spacecraft/raw/main/src/pandoraspacecraft/data/kernels/Pandora/{fname}",
+                path,
+                pkgname="pandoraspacecraft",
+            )

@@ -1,4 +1,4 @@
-# Maintainers
+# Updating PandoraSpacraft Kernels
 
 If you have to maintain this package you can use the `maintainence` module to update the CK and SPK files using telemetry, and update the test kernel if needed. You will need the quaternions from telemetry in their raw, unformated form as a CSV file, which look like this:
 

@@ -66,3 +66,14 @@ The test kernel is only valid between the following dates:
 ### TLEs
 
 TLEs are not used by this package but are maintained and pushed to GitHub.
+
+### Troubleshooting
+
+If you have any trouble with `PandoraSpacecraft` the best first answer is to clear your cache of SPICE kernels. You can do this with
+
+```python
+from pandoraspacecraft.utils import clear_cache
+clear_cache()
+```
+
+You should also make sure your install is up to date with the current version!

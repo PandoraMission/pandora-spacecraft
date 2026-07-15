@@ -10,7 +10,7 @@ nav:
     - background.ipynb
     - startrackers.ipynb
     - tlemode.ipynb
-  - Maintenance:
+  - Mainteners:
     - installing_spice.md
     - maintainers.md
   

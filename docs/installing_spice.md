@@ -1,8 +1,9 @@
 # Installing Spice
 
-In order to use some of the functionality in pandora-spacecraft, you will need to have CSPICE and spiceypy installed. Here are the instructions to do so on a Mac with an M1 chip.
+In order to use some of the functionality in pandora-spacecraft, you will need to have CSPICE and spiceypy installed. This is primarily needed for people involved in maintaining this package or uploading new SPK/TLEs. Here are the instructions to do so on a Mac with an M1 chip.
 
-NOTE (7/14/2026): This guide is currently incomplete. It will be updated with further information on installing `ckslicer` soon.
+You can find additional documentation on the [NAIF website](https://naif.jpl.nasa.gov/naif/toolkit.html) or look at their [Toolkit installation slides](https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/Tutorials/pdf/individual_docs/07_installing_toolkit.pdf).
+
 
 
 
@@ -15,11 +16,11 @@ NOTE (7/14/2026): This guide is currently incomplete. It will be updated with fu
 
 2. Place these files in your root directory on your computer.
 
-3. In the terminal, run
+3. In the terminal, navigate to your root directory and run
 	```
     /bin/csh -f importCSpice.csh
     ```
-   The script importCSpice.csh will uncompress and untar the toolkit and,
+   The script `importCSpice.csh` will uncompress and untar the toolkit and,
    on platforms where NAIF anticipates that it is necessary, compile and
    link all source code products. It should create a cspice/ directory in the location that you placed the original files.
 
@@ -45,12 +46,19 @@ NOTE (7/14/2026): This guide is currently incomplete. It will be updated with fu
     ```
    If this fails, you have likely inputed the wrong path in your .zshrc file.
 
-8. You'll also need to install the utility ckslicer, which can be downloaded from [the NAIF utilities page](https://naif.jpl.nasa.gov/naif/utilities_PC_Linux_32bit.html). Download the file by clicking "ckslicer" in the table, then place the file in `cspice/exe/`. 
+8. You'll also need to install the utility `ckslicer`, which can be downloaded from [the NAIF utilities page](https://naif.jpl.nasa.gov/naif/utilities_PC_Linux_32bit.html). Download the file by clicking "ckslicer" in the table, then place the file in `cspice/exe/`. 
 
-    NOTE: If you are on a government computer, you will need elevated privileges on your machine in order to install this executable. You may need to submit a NAMS request to complete this step.
+    **NOTE:** If you are on a government computer, you will need elevated privileges on your machine in order to install this executable. You may need to submit a NAMS request to complete this step.
 
+    8a. Place the `ckslicer` file in in `cspice/exe/`. Run chmod to make the downladed file executable.
+    ```
+    chmod +x ~/cspice/exe/ckslicer
+    ```
 
+    8b. Navigate to your cspice directory and run
+    ```
+    /bin/csh -f makeall.csh
+    ```
 
-If everything working you should be good to go!
+    8c. At this point, check if you are able to run the commands in `maintainers.md`. If you are--great, you're all done! If not (especially if you are working on a government computer), you may need to check that a) you have elevated privileges on your computer and b) whether there is a software quarantine on `ckslicer`. The first must be resolved by submitting a NAMS request, and the latter can be resolved with a to visit the IT department. Once you have cleared up those issues, run step 8b again and you should be good to go.
 
-You can find additional documentation on the [NAIF website](https://naif.jpl.nasa.gov/naif/toolkit.html) or look at their [Toolkit installation slides](https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/Tutorials/pdf/individual_docs/07_installing_toolkit.pdf)

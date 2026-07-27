@@ -764,8 +764,8 @@
 
 
 <h1 id="installing-spice">Installing Spice</h1>
-<p>In order to use some of the functionality in pandora-spacecraft, you will need to have CSPICE and spiceypy installed. Here are the instructions to do so on a Mac with an M1 chip.</p>
-<p>NOTE (7/14/2026): This guide is currently incomplete. It will be updated with further information on installing <code>ckslicer</code> soon.</p>
+<p>In order to use some of the functionality in pandora-spacecraft, you will need to have CSPICE and spiceypy installed. This is primarily needed for people involved in maintaining this package or uploading new SPK/TLEs. Here are the instructions to do so on a Mac with an M1 chip.</p>
+<p>You can find additional documentation on the <a href="https://naif.jpl.nasa.gov/naif/toolkit.html">NAIF website</a> or look at their <a href="https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/Tutorials/pdf/individual_docs/07_installing_toolkit.pdf">Toolkit installation slides</a>.</p>
 <ol>
 <li>
 <p>Download the following files from <a href="https://naif.jpl.nasa.gov/naif/toolkit_C_MacM1_OSX_clang_64bit.html">the NAIF website</a>.
@@ -778,10 +778,10 @@
 <p>Place these files in your root directory on your computer.</p>
 </li>
 <li>
-<p>In the terminal, run
+<p>In the terminal, navigate to your root directory and run
     <div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>/bin/csh -f importCSpice.csh
 </span></code></pre></div>
-   The script importCSpice.csh will uncompress and untar the toolkit and,
+   The script <code>importCSpice.csh</code> will uncompress and untar the toolkit and,
    on platforms where NAIF anticipates that it is necessary, compile and
    link all source code products. It should create a cspice/ directory in the location that you placed the original files.</p>
 </li>
@@ -808,12 +808,17 @@
    If this fails, you have likely inputed the wrong path in your .zshrc file.</p>
 </li>
 <li>
-<p>You'll also need to install the utility ckslicer, which can be downloaded from <a href="https://naif.jpl.nasa.gov/naif/utilities_PC_Linux_32bit.html">the NAIF utilities page</a>. Download the file by clicking "ckslicer" in the table, then place the file in <code>cspice/exe/</code>. </p>
-<p>NOTE: If you are on a government computer, you will need elevated privileges on your machine in order to install this executable. You may need to submit a NAMS request to complete this step.</p>
+<p>You'll also need to install the utility <code>ckslicer</code>, which can be downloaded from <a href="https://naif.jpl.nasa.gov/naif/utilities_PC_Linux_32bit.html">the NAIF utilities page</a>. Download the file by clicking "ckslicer" in the table, then place the file in <code>cspice/exe/</code>. </p>
+<p><strong>NOTE:</strong> If you are on a government computer, you will need elevated privileges on your machine in order to install this executable. You may need to submit a NAMS request to complete this step.</p>
+<p>8a. Place the <code>ckslicer</code> file in in <code>cspice/exe/</code>. Run chmod to make the downladed file executable.
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>chmod +x ~/cspice/exe/ckslicer
+</span></code></pre></div></p>
+<p>8b. Navigate to your cspice directory and run
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>/bin/csh -f makeall.csh
+</span></code></pre></div></p>
+<p>8c. At this point, check if you are able to run the commands in <code>maintainers.md</code>. If you are--great, you're all done! If not (especially if you are working on a government computer), you may need to check that a) you have elevated privileges on your computer and b) whether there is a software quarantine on <code>ckslicer</code>. The first must be resolved by submitting a NAMS request, and the latter can be resolved with a to visit the IT department. Once you have cleared up those issues, run step 8b again and you should be good to go.</p>
 </li>
 </ol>
-<p>If everything working you should be good to go!</p>
-<p>You can find additional documentation on the <a href="https://naif.jpl.nasa.gov/naif/toolkit.html">NAIF website</a> or look at their <a href="https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/Tutorials/pdf/individual_docs/07_installing_toolkit.pdf">Toolkit installation slides</a></p>
 
 
 

@@ -1,10 +1,11 @@
 # Standard library
 import os  # noqa
+from pathlib import Path  # noqa
 
 from astropy.config import get_cache_dir
 
-PACKAGEDIR = os.path.abspath(os.path.dirname(__file__))
-CACHEDIR = get_cache_dir("pandoraspacecraft") + "/download/url/"
+PACKAGEDIR = Path(__file__).resolve().parent
+CACHEDIR = Path(get_cache_dir("pandoraspacecraft")) / "download" / "url"
 TEST_MODE = False
 
 
@@ -35,20 +36,12 @@ def get_version():
 __version__ = get_version()
 
 import logging  # noqa: E402
-import os  # noqa
 from glob import glob  # noqa
-from pathlib import Path  # noqa
 
 log = logging.getLogger("pandoraspacecraft")
 
-# PACKAGEDIR = os.path.abspath(os.path.dirname(__file__))
-# KERNELDIR = f"{PACKAGEDIR}/data/kernels/"
-# TLEDIR = f"{PACKAGEDIR}/data/tle/"
-
-
-PACKAGEDIR = str(Path(__file__).resolve().parent)
-PROJECTDIR = str(Path(__file__).resolve().parents[2])
-KERNELDIR = str(Path(PACKAGEDIR) / "data" / "kernels") + os.sep
-TLEDIR = str(Path(PACKAGEDIR) / "data" / "tle") + os.sep
+PROJECTDIR = Path(__file__).resolve().parents[2]
+KERNELDIR = PACKAGEDIR / "data" / "kernels"
+TLEDIR = PACKAGEDIR / "data" / "tle"
 
 from .spacecraft import PandoraSpacecraft  # noqa

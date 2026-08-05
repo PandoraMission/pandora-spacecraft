@@ -36,11 +36,18 @@ __version__ = get_version()
 
 import logging  # noqa: E402
 from glob import glob  # noqa
+from pathlib import Path  # noqa
 
 log = logging.getLogger("pandoraspacecraft")
 
-PACKAGEDIR = Path(__file__).resolve().parent
-KERNELDIR = PACKAGEDIR / "data" / "kernels"
-TLEDIR = PACKAGEDIR / "data" / "tle"
+# PACKAGEDIR = os.path.abspath(os.path.dirname(__file__))
+# KERNELDIR = f"{PACKAGEDIR}/data/kernels/"
+# TLEDIR = f"{PACKAGEDIR}/data/tle/"
+
+
+PACKAGEDIR = str(Path(__file__).resolve().parent)
+PROJECTDIR = str(Path(__file__).resolve().parents[2])
+KERNELDIR = str(Path(PACKAGEDIR) / "data" / "kernels") + os.sep
+TLEDIR = str(Path(PACKAGEDIR) / "data" / "tle") + os.sep
 
 from .spacecraft import PandoraSpacecraft  # noqa

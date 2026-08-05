@@ -1,13 +1,13 @@
 [tool.poetry]
 name = "pandoraspacecraft"
-version = "1.2.0"
+version = "1.2.5"
 description = ""
 authors = ["Christina Hedges <christina.l.hedges@nasa.gov>"]
 readme = "docs/README.md"
 
 exclude = [
-  "src/pandoraspacecraft/data/kernels/Pandora/*.bsp",
-  "src/pandoraspacecraft/data/kernels/Pandora/*.bc",
+  "src/pandoraspacecraft/data/kernels/Pandora/pandora_2*.bsp",
+  "src/pandoraspacecraft/data/kernels/Pandora/pandora_2*.bc",
 ]
 
 

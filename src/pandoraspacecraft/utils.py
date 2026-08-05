@@ -160,13 +160,13 @@ def create_meta_kernel(tles_only=False):
         path_symbols.append(dirname.name)
         for d in sorted(dirname.iterdir()):
             if (not d.name.endswith("bsp")) and (not d.name.endswith("bc")):
-                kernels_to_load.append(_kernel_entry(dirname.name, d.name))
+                kernels_to_load.append(kernel_entry(dirname.name, d.name))
             elif d.name == "pandora_tle.bsp":
-                kernels_to_load.append(_kernel_entry(dirname.name, "pandora_tle.bsp"))
+                kernels_to_load.append(kernel_entry(dirname.name, "pandora_tle.bsp"))
     path_values.extend(truncate_directory_string(cache_dir))
     path_symbols.extend(["cache"])
     kernels_to_load.extend(
-        [_kernel_entry("cache", path.relative_to(cache_dir)) for path in paths]
+        [kernel_entry("cache", path.relative_to(cache_dir)) for path in paths]
     )
 
     def format_list(l, pad=10):

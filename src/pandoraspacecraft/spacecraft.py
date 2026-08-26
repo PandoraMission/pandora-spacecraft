@@ -1,6 +1,7 @@
 """Classes for working with the orbits of spacecraft"""
 
 import subprocess
+from pathlib import Path
 from typing import Union
 
 import astropy.units as u
@@ -98,26 +99,29 @@ class Spacecraft(object):
             log.warning(
                 "`pandoraspacecraft` is in test mode, and will not download new kernels. Will truncated kernels."
             )
-            self.meta_kernel_path = cache_contents(pkgname="pandoraspacecraft")[
-                "https://github.com/pandoramission/pandoraspacecraft/src/pandoraspacecraft/data/TestMeta.txt"
-            ]
+            self.meta_kernel_path = Path(
+                cache_contents(pkgname="pandoraspacecraft")[
+                    "https://github.com/pandoramission/pandoraspacecraft/src/pandoraspacecraft/data/TestMeta.txt"
+                ]
+            )
         else:
             # convert_tles_to_spk(run_all=False)
             log.info(
                 "`pandoraspacecraft` is not in test mode, and will download and use kernels if available."
             )
             create_meta_kernel(tles_only=tles_only)
-            self.meta_kernel_path = cache_contents(pkgname="pandoraspacecraft")[
-                "https://github.com/pandoramission/pandoraspacecraft/src/pandoraspacecraft/data/Meta.txt"
-            ]
+            self.meta_kernel_path = Path(
+                cache_contents(pkgname="pandoraspacecraft")[
+                    "https://github.com/pandoramission/pandoraspacecraft/src/pandoraspacecraft/data/Meta.txt"
+                ]
+            )
         spiceypy.kclear()
-        spiceypy.furnsh(self.meta_kernel_path)
+        spiceypy.furnsh(str(self.meta_kernel_path))
         self.start_time, self.end_time = self._get_kernel_start_and_end_times()
 
     @property
     def meta_kernel(self):
-        with open(self.meta_kernel_path, "r") as file:
-            return file.read()
+        return self.meta_kernel_path.read_text()
 
     def _get_all_kernel_start_and_end_times(self):
 

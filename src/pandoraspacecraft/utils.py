@@ -6,7 +6,6 @@ import tempfile
 import warnings
 from datetime import datetime, timedelta, timezone
 from functools import lru_cache
-from glob import glob
 from pathlib import Path
 
 import astropy.units as u
@@ -71,22 +70,41 @@ def clear_cache(all=False):
         ]
 
 
-def truncate_directory_string(directory_string):
-    """Turns a directory string into a SPICE compliant list of directorys..."""
+def truncate_directory_string(directory, max_length=50):
+    """Turns a directory string into a SPICE compliant list of directories...
+
+    SPICE limits every string in a text kernel to 80 characters, so a long
+    directory is broken into several strings, each continued with a trailing
+    "+". The pieces are split on component boundaries using `Path.parts`, so
+    this works with both POSIX roots ("/") and Windows drives ("C:\\").
+    """
+    parts = Path(directory).parts
+    if not parts:
+        return [""]
+
+    # `parts[0]` is the anchor -- "/" on POSIX, "C:\\" on Windows -- and already
+    # ends in a separator, so the first component is appended without one.
     lines = []
-    line = ""
-    words = directory_string.split("/")
-    for word in words:
-        if word == "":
-            continue
-        if len(line) < 50:
-            line = f"{line}/{word}"
+    line = parts[0]
+    for part in parts[1:]:
+        if len(line) < max_length:
+            line = line + part if line.endswith(os.sep) else line + os.sep + part
         else:
-            line = f"{line}+"
-            lines.append(line)
-            line = f"/{word}"
+            lines.append(line + "+")
+            line = os.sep + part
     lines.append(line)
     return lines
+
+
+def kernel_entry(symbol, relative_path):
+    """Build one KERNELS_TO_LOAD entry, e.g. "$cache/<hash>/contents".
+
+    SPICE pastes the PATH_VALUE for `symbol` onto whatever follows it, so the
+    separator here has to match the one in PATH_VALUES. SPICE accepts either
+    separator on Windows, but keeping them consistent keeps the meta kernel
+    readable.
+    """
+    return f"${symbol}{os.sep}{relative_path}"
 
 
 def create_meta_kernel(tles_only=False):
@@ -111,57 +129,44 @@ def create_meta_kernel(tles_only=False):
             )
 
     paths = get_file_paths(KERNELS)
-    cc = cache_contents(pkgname="pandoraspacecraft")
     if not tles_only:
-        paths = np.hstack(
-            [
-                paths,
-                np.sort(
-                    [
-                        value
-                        for item, value in cc.items()
-                        if (value not in paths)
-                        and (
-                            item.split("/")[-1].startswith("pandora")
-                            & (item.endswith(".spk"))
-                            | item.endswith(".bc")
-                            | item.endswith(".bsp")
-                        )
-                    ]
-                ),
-            ]
-        )
+        cached = [
+            Path(value)
+            for item, value in cache_contents(pkgname="pandoraspacecraft").items()
+            if item.split("/")[-1].startswith("pandora") & (item.endswith(".spk"))
+            | item.endswith(".bc")
+            | item.endswith(".bsp")
+        ]
+        paths = paths + sorted(path for path in cached if path not in paths)
     if len(paths) == 0:
         raise ValueError(
             "Can not find any SPICE kernels. Check documentation on installation."
         )
-    cache_dirs = np.unique([os.path.dirname(os.path.dirname(f)) for f in paths])
+    cache_dirs = {path.parent.parent for path in paths}
     if len(cache_dirs) != 1:
         raise ValueError(
             "You have provided multiple cache directories for SPICE kernels, try reinstalling."
         )
+    cache_dir = cache_dirs.pop()
 
     path_values = []
     path_symbols = []
     kernels_to_load = []
 
-    for dirname in glob(f"{KERNELDIR}/*"):
-        if "testkernels" in dirname:
+    for dirname in sorted(KERNELDIR.iterdir()):
+        if dirname.name == "testkernels":
             continue
-        for d in truncate_directory_string(dirname):
-            path_values.append(d)
-        path_symbols.append(dirname.split("/")[-1])
-        for d in np.sort(glob(dirname + "/*")):
-            if (not d.endswith("bsp")) and (not d.endswith("bc")):
-                kernels_to_load.append("$" + dirname.split("/")[-1] + d[len(dirname) :])
-            elif d.endswith("pandora_tle.bsp"):
-                kernels_to_load.append(
-                    "$" + dirname.split("/")[-1] + "/pandora_tle.bsp"
-                )
-    path_values.extend(truncate_directory_string(cache_dirs[0]))
+        path_values.extend(truncate_directory_string(dirname))
+        path_symbols.append(dirname.name)
+        for d in sorted(dirname.iterdir()):
+            if (not d.name.endswith("bsp")) and (not d.name.endswith("bc")):
+                kernels_to_load.append(kernel_entry(dirname.name, d.name))
+            elif d.name == "pandora_tle.bsp":
+                kernels_to_load.append(kernel_entry(dirname.name, "pandora_tle.bsp"))
+    path_values.extend(truncate_directory_string(cache_dir))
     path_symbols.extend(["cache"])
     kernels_to_load.extend(
-        ["$cache/" + path[len(cache_dirs[0]) + 1 :] for path in paths]
+        [kernel_entry("cache", path.relative_to(cache_dir)) for path in paths]
     )
 
     def format_list(l, pad=10):
@@ -198,8 +203,10 @@ def create_meta_kernel(tles_only=False):
 def get_file_path(url):
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", CacheMissingWarning)
-        return download_file(
-            url, cache=True, show_progress=False, pkgname="pandoraspacecraft"
+        return Path(
+            download_file(
+                url, cache=True, show_progress=False, pkgname="pandoraspacecraft"
+            )
         )
 
 
@@ -435,14 +442,13 @@ def find_merged_gaps(t, gap_threshold=100.0, merge_threshold=1000.0):
 
 
 def import_from_packagedir_to_cache():
-    paths = glob(str(Path(KERNELDIR) / "Pandora" / "*"))
-    for path in paths:
-        fname = path.split("/")[-1]
+    for path in sorted((KERNELDIR / "Pandora").iterdir()):
+        fname = path.name
         if not fname.startswith("pandora_2"):
             continue
         if (fname.endswith("bsp")) | (fname.endswith("bc")):
             import_file_to_cache(
                 f"https://github.com/PandoraMission/pandora-spacecraft/raw/main/src/pandoraspacecraft/data/kernels/Pandora/{fname}",
-                path,
+                str(path),
                 pkgname="pandoraspacecraft",
             )

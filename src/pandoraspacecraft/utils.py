@@ -116,7 +116,7 @@ def create_meta_kernel(tles_only=False):
         "earth_latest_high_prec.bpc": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/",
     }
     if not tles_only:
-        ndays = 190
+        ndays = 208
         for idx in np.arange(0, ndays + 1, 1):
             t = (Time.strptime("2026011", format_string="%Y%j") + idx * u.day).strftime(
                 "%Y%j"
